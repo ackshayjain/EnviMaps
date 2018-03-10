@@ -27,7 +27,7 @@ SECRET_KEY = '3-duo8e5jd4qp!n9-9k@a3imr85t1^wn950y$#@g5w*-(o_i8p'
 DEBUG = False
 
 ALLOWED_HOSTS = [
-'https://limitless-bayou-81744.herokuapp.com/',
+'limitless-bayou-81744.herokuapp.com',
 ]
 
 
