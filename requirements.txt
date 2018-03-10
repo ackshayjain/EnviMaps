@@ -19,6 +19,4 @@ simplejson==3.11.1
 six==1.10.0
 sqlparse==0.2.3
 tldextract==2.1.0
-urllib2==1498656401.94
-urllib3==1.21.1
 whitenoise==3.3.1
