@@ -1,0 +1,548 @@
+
+<!doctype html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Envi Maps</title>
+    <meta name="description" content="EnviMaps - Help your friends & family become safer.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS -->
+<!--
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css"/>
+-->
+    {% load static from staticfiles %}
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/proj.css' %}" />
+
+    <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Varela+Round"> -->
+
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+
+   
+
+
+
+    <style>
+    #map{
+        margin: 0 auto;
+        height: 500px;
+        width: 100%;
+    }
+        .card {
+
+            -webkit-animation: animOpp 0.4s 1;
+            animation: animOpp 0.4s 1;
+            box-shadow: 1px 1px 5px #304129;
+        }
+        .card:hover {
+            -webkit-animation: anim ease-out 0.5s 1;
+            animation: anim 0.5s 1;
+            transform: translateZ(15px);
+            box-shadow: 1px 6px 9px #b46d64;
+
+
+        }
+        .card:active {
+            -webkit-transform: translateZ(13px);
+            transform: translateZ(13px);
+        }
+        @-webkit-keyframes anim {
+            0% {
+                transform: rotateX(0deg) translateZ(0px);
+            }
+            25% {
+                transform: rotateX(-4deg) translateZ(8px);
+            }
+            37% {
+                transform: rotateX(-8deg) translateZ(15px);
+                transform-origin: 50% 0%;
+            }
+            72% {
+                transform-origin: 50% 0%;
+                transform: rotateX(-4deg) translateZ(15px);
+            }
+            100% {
+                transform-origin: 50% 0%;
+                transform: rotateX(0deg) translateZ(15px);
+            }
+        }
+        @keyframes anim {
+            0% {
+                transform: rotateX(0deg) translateZ(0px);
+            }
+            25% {
+                transform: rotateX(-4deg) translateZ(8px);
+            }
+            37% {
+                transform: rotateX(-8deg) translateZ(15px);
+                transform-origin: 50% 0%;
+            }
+            72% {
+                transform-origin: 50% 0%;
+                transform: rotateX(-4deg) translateZ(15px);
+            }
+            100% {
+                transform-origin: 50% 0%;
+                transform: rotateX(0deg) translateZ(15px);
+            }
+        }
+        @-webkit-keyframes animOpp {
+            0% {
+                transform: translateZ(15px);
+            }
+            35% {
+                transform: translateZ(10px);
+            }
+            100% {
+                transform: translateZ(0px);
+            }
+        }
+        @keyframes animOpp {
+            0% {
+                transform: translateZ(15px);
+            }
+            35% {
+                transform: translateZ(10px);
+            }
+            100% {
+                transform: translateZ(0px);
+            }
+        }
+        .col-center {
+    margin: 0 auto;
+    float: none !important;
+}
+.carousel {
+    margin: 30px auto 60px;
+    padding: 0 80px;
+}
+.carousel .item {
+    text-align: center;
+    overflow: hidden;
+}
+.carousel .item h4 {
+    font-family: 'Varela Round', sans-serif;
+}
+.carousel .item img {
+    max-width: 100%;
+    display: inline-block;
+}
+.carousel .item .btn {
+    border-radius: 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: bold;
+    border: none;
+    background: #a177ff;
+    padding: 6px 15px;
+    margin-top: 5px;
+}
+.carousel .item .btn:hover {
+    background: #8c5bff;
+}
+.carousel .item .btn i {
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 5px;
+}
+.carousel .thumb-wrapper {
+    margin: 5px;
+    text-align: left;
+    background: #fff;
+    box-shadow: 0px 2px 2px rgba(0,0,0,0.1);   
+}
+.carousel .thumb-content {
+    padding: 15px;
+    font-size: 13px;
+}
+.carousel .carousel-control {
+    height: 44px;
+    width: 44px;
+    background: none;   
+    margin: auto 0;
+    border-radius: 50%;
+    border: 3px solid rgba(0, 0, 0, 0.8);
+}
+.carousel .carousel-control i {
+    font-size: 36px;
+    position: absolute;
+    top: 50%;
+    display: inline-block;
+    margin: -19px 0 0 0;
+    z-index: 5;
+    left: 0;
+    right: 0;
+    color: rgba(0, 0, 0, 0.8);
+    text-shadow: none;
+    font-weight: bold;
+}
+.carousel .carousel-control.left i {
+    margin-left: -3px;
+}
+.carousel .carousel-control.right i {
+    margin-right: -3px;
+}
+.carousel .carousel-indicators {
+    bottom: -50px;
+}
+.carousel-indicators li, .carousel-indicators li.active {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin: 4px;
+    border-color: transparent;
+}
+.carousel-indicators li {   
+    background: #ababab;
+}
+.carousel-indicators li.active {    
+    background: #555;
+}
+
+
+
+
+
+        option{
+            padding-top: 2em; !important
+        padding-bottom: 2em; !important
+        }
+
+    </style>
+</head>
+
+<body onLoad="updateMap({{lat}},{{lon}})">
+<!-- <body onLoad="updateMapByL({{loc}})"> -->
+
+
+<div id="page-wrapper">
+
+    <!-- Header -->
+    <div id="header-wrapper">
+        <div id="header" class="container">
+
+            <!-- Logo -->
+            <h1 id="logo"><a href="index.html"><img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTcuMS4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDUxMSA1MTEiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMSA1MTE7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iMzJweCIgaGVpZ2h0PSIzMnB4Ij4KPGc+Cgk8cGF0aCBkPSJNMjU1LjUsMEMxNDkuNzQsMCw2My42OTgsODYuMDQyLDYzLjY5OCwxOTEuODAyYzAsMzkuNTczLDkuOTcyLDc4Ljg4NywyOS42MzgsMTE2Ljg1MiAgIGMxNS42MzEsMzAuMTc1LDM3LjM4Nyw1OS41NTMsNjQuNjYzLDg3LjMxOWM0Ni4yOTEsNDcuMTIyLDkxLjkwOSw3Mi45ODgsOTMuODI5LDc0LjA2NmMxLjE0MSwwLjY0MSwyLjQwNywwLjk2MSwzLjY3MywwLjk2MSAgIGMxLjI5LDAsMi41NzktMC4zMzIsMy43MzQtMC45OTZjMS45MTgtMS4xMDEsNDcuNTEyLTI3LjUyLDkzLjc4My03NC45MTFjMjcuMjY3LTI3LjkyNyw0OS4wMTYtNTcuMzMzLDY0LjY0My04Ny40MDIgICBjMTkuNjY5LTM3Ljg0NywyOS42NDItNzYuODM4LDI5LjY0Mi0xMTUuODg5QzQ0Ny4zMDIsODYuMDQyLDM2MS4yNiwwLDI1NS41LDB6IE00MDQuNDUxLDMwMC41OCAgIGMtMTQuOTAxLDI4LjcyNy0zNS43MjYsNTYuOTA3LTYxLjg5NCw4My43NTVjLTM3LjQzNiwzOC40MDktNzUuMzQ2LDYzLjE1OC04Ny4wOTYsNzAuNDI4ICAgYy0xMS43Ny03LjE0NS00OS42NDUtMzEuNDQ3LTg3LjA0Mi02OS41ODdjLTI2LjE1Ny0yNi42NzYtNDYuOTczLTU0LjgxLTYxLjg2OS04My42MjIgICBjLTE4LjQ4MS0zNS43NDgtMjcuODUzLTcyLjY3My0yNy44NTMtMTA5Ljc1MUM3OC42OTgsOTQuMzEzLDE1OC4wMSwxNSwyNTUuNSwxNXMxNzYuODAzLDc5LjMxMywxNzYuODAzLDE3Ni44MDIgICBDNDMyLjMwMiwyMjguMzU0LDQyMi45MzIsMjY0Ljk1Miw0MDQuNDUxLDMwMC41OHoiIGZpbGw9IiNGRkZGRkYiLz4KCTxwYXRoIGQ9Ik0zODIuMDgxLDEyMy44NDdjLTAuOTk0LTEuODU2LTIuMDQ2LTMuNzIxLTMuMTI3LTUuNTQyYy0yLjExNS0zLjU2MS02LjcxNi00LjczMi0xMC4yNzgtMi42MTkgICBjLTMuNTYyLDIuMTE1LTQuNzM0LDYuNzE3LTIuNjE5LDEwLjI3OGMwLjk3OCwxLjY0NiwxLjkyOSwzLjMzMiwyLjg1NCw1LjA2MmMwLjAwMSwwLjAwMywwLjAwMywwLjAwNywwLjAwNSwwLjAxICAgQzM3OC43ODQsMTQ5LjUwNSwzODQsMTcwLjQxMSwzODQsMTkxLjVjMCw3MC44NTUtNTcuNjQ1LDEyOC41LTEyOC41LDEyOC41UzEyNywyNjIuMzU1LDEyNywxOTEuNVMxODQuNjQ1LDYzLDI1NS41LDYzICAgYzE1LjYyMywwLDMwLjg4NSwyLjc3LDQ1LjM2Myw4LjIzNGMzLjg3NCwxLjQ2Myw4LjIwMy0wLjQ5Myw5LjY2NS00LjM2OWMxLjQ2Mi0zLjg3NS0wLjQ5NC04LjIwMy00LjM2OS05LjY2NSAgIGMtMTYuMTc2LTYuMTA0LTMzLjIyLTkuMi01MC42NTktOS4yQzE3Ni4zNzQsNDgsMTEyLDExMi4zNzQsMTEyLDE5MS41UzE3Ni4zNzQsMzM1LDI1NS41LDMzNVMzOTksMjcwLjYyNiwzOTksMTkxLjUgICBjMC0yMy41NjYtNS44MzgtNDYuOTM3LTE2LjkxMi02Ny42NDJDMzgyLjA4NiwxMjMuODU0LDM4Mi4wODQsMTIzLjg1MSwzODIuMDgxLDEyMy44NDd6IiBmaWxsPSIjRkZGRkZGIi8+Cgk8cGF0aCBkPSJNMzMxLjA1OCw4Ny41NWM1LjM2NCwzLjkwNiwxMC40Nyw4LjI2NSwxNS4xNzYsMTIuOTU4YzEuNDY0LDEuNDU5LDMuMzc5LDIuMTg5LDUuMjk1LDIuMTg5ICAgYzEuOTIzLDAsMy44NDYtMC43MzUsNS4zMTEtMi4yMDVjMi45MjUtMi45MzMsMi45MTctNy42ODItMC4wMTYtMTAuNjA2Yy01LjI1Mi01LjIzNy0xMC45NTEtMTAuMTAzLTE2LjkzNy0xNC40NjIgICBjLTMuMzUtMi40MzgtOC4wNC0xLjY5OS0xMC40NzgsMS42NDhDMzI2Ljk3Miw4MC40MiwzMjcuNzEsODUuMTExLDMzMS4wNTgsODcuNTV6IiBmaWxsPSIjRkZGRkZGIi8+Cgk8cGF0aCBkPSJNMzAzLjUsNDk2aC05NmMtNC4xNDIsMC03LjUsMy4zNTgtNy41LDcuNXMzLjM1OCw3LjUsNy41LDcuNWg5NmM0LjE0MiwwLDcuNS0zLjM1OCw3LjUtNy41UzMwNy42NDIsNDk2LDMwMy41LDQ5NnoiIGZpbGw9IiNGRkZGRkYiLz4KCTxwYXRoIGQ9Ik0yNzIsMTQzLjVjMCw1Ljk3MiwxLjY3MSwxMS41NjEsNC41NjksMTYuMzI1TDI1NS41LDE4MC44OTRsLTIxLjA2OS0yMS4wNjljMi44OTgtNC43NjQsNC41NjktMTAuMzUzLDQuNTY5LTE2LjMyNSAgIGMwLTE3LjM2OS0xNC4xMzEtMzEuNS0zMS41LTMxLjVTMTc2LDEyNi4xMzEsMTc2LDE0My41czE0LjEzMSwzMS41LDMxLjUsMzEuNWM1Ljk3MiwwLDExLjU2MS0xLjY3MSwxNi4zMjUtNC41NjlsMjEuMDY5LDIxLjA2OSAgIGwtMjEuMDY5LDIxLjA2OUMyMTkuMDYxLDIwOS42NzEsMjEzLjQ3MiwyMDgsMjA3LjUsMjA4Yy0xNy4zNjksMC0zMS41LDE0LjEzMS0zMS41LDMxLjVzMTQuMTMxLDMxLjUsMzEuNSwzMS41ICAgczMxLjUtMTQuMTMxLDMxLjUtMzEuNWMwLTUuOTcyLTEuNjcxLTExLjU2MS00LjU2OS0xNi4zMjVsMjEuMDY5LTIxLjA2OWwyMS4wNjksMjEuMDY5QzI3My42NywyMjcuOTM5LDI3MiwyMzMuNTI4LDI3MiwyMzkuNSAgIGMwLDE3LjM2OSwxNC4xMzEsMzEuNSwzMS41LDMxLjVzMzEuNS0xNC4xMzEsMzEuNS0zMS41UzMyMC44NjksMjA4LDMwMy41LDIwOGMtNS45NzIsMC0xMS41NjEsMS42NzEtMTYuMzI1LDQuNTY5TDI2Ni4xMDYsMTkxLjUgICBsMjEuMDY5LTIxLjA2OWM0Ljc2NCwyLjg5OCwxMC4zNTMsNC41NjksMTYuMzI1LDQuNTY5YzE3LjM2OSwwLDMxLjUtMTQuMTMxLDMxLjUtMzEuNVMzMjAuODY5LDExMiwzMDMuNSwxMTIgICBTMjcyLDEyNi4xMzEsMjcyLDE0My41eiBNMjA3LjUsMTYwYy05LjA5OCwwLTE2LjUtNy40MDItMTYuNS0xNi41czcuNDAyLTE2LjUsMTYuNS0xNi41czE2LjUsNy40MDIsMTYuNSwxNi41ICAgYzAsMS43NzQtMC4yODksMy40ODEtMC44MSw1LjA4NGwtMTAuMzg3LTEwLjM4N2MtMi45MjktMi45MjktNy42NzgtMi45MjktMTAuNjA2LDBjLTIuOTI5LDIuOTI5LTIuOTI5LDcuNjc4LDAsMTAuNjA2ICAgbDEwLjM4NywxMC4zODdDMjEwLjk4LDE1OS43MTEsMjA5LjI3NCwxNjAsMjA3LjUsMTYweiBNMjI0LDIzOS41YzAsOS4wOTgtNy40MDIsMTYuNS0xNi41LDE2LjVzLTE2LjUtNy40MDItMTYuNS0xNi41ICAgczcuNDAyLTE2LjUsMTYuNS0xNi41YzEuNzc0LDAsMy40ODEsMC4yODksNS4wODQsMC44MWwtMTAuMzg3LDEwLjM4N2MtMi45MjksMi45MjktMi45MjksNy42NzgsMCwxMC42MDYgICBjMS40NjQsMS40NjQsMy4zODQsMi4xOTcsNS4zMDMsMi4xOTdzMy44MzktMC43MzIsNS4zMDMtMi4xOTdsMTAuMzg3LTEwLjM4N0MyMjMuNzExLDIzNi4wMTksMjI0LDIzNy43MjYsMjI0LDIzOS41eiBNMzAzLjUsMjIzICAgYzkuMDk4LDAsMTYuNSw3LjQwMiwxNi41LDE2LjVzLTcuNDAyLDE2LjUtMTYuNSwxNi41cy0xNi41LTcuNDAyLTE2LjUtMTYuNWMwLTEuNzc0LDAuMjg5LTMuNDgxLDAuODEtNS4wODRsMTAuMzg3LDEwLjM4NyAgIGMxLjQ2NCwxLjQ2NCwzLjM4NCwyLjE5Nyw1LjMwMywyLjE5N3MzLjgzOS0wLjczMiw1LjMwMy0yLjE5N2MyLjkyOS0yLjkyOSwyLjkyOS03LjY3OCwwLTEwLjYwNmwtMTAuMzg3LTEwLjM4NyAgIEMzMDAuMDE5LDIyMy4yODksMzAxLjcyNSwyMjMsMzAzLjUsMjIzeiBNMzIwLDE0My41YzAsOS4wOTgtNy40MDIsMTYuNS0xNi41LDE2LjVjLTEuNzc0LDAtMy40ODEtMC4yODktNS4wODQtMC44MWwxMC4zODctMTAuMzg3ICAgYzIuOTI5LTIuOTI5LDIuOTI5LTcuNjc4LDAtMTAuNjA2Yy0yLjkyOS0yLjkyOS03LjY3OC0yLjkyOS0xMC42MDYsMGwtMTAuMzg3LDEwLjM4N2MtMC41MjEtMS42MDMtMC44MS0zLjMwOS0wLjgxLTUuMDg0ICAgYzAtOS4wOTgsNy40MDItMTYuNSwxNi41LTE2LjVTMzIwLDEzNC40MDIsMzIwLDE0My41eiIgZmlsbD0iI0ZGRkZGRiIvPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo=" /> &nbsp;Envi Maps</a></h1>
+
+            <!-- Nav -->
+            <nav id="nav">
+                <ul>
+                    <li id="scrollwhyreport">
+                        <a href="#whyreport">Why Report?</a>
+
+                    </li>
+                    <li id="scrollwhyreport"><a href="#report">Report</a></li>
+                    <li class="break" id="scrollwhyreport"><a href="#mapacrime">Heat Map</a></li>
+                    <li id="scrollsharesection"><a href="#sharesection">Share</a></li>
+                </ul>
+            </nav>
+
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="wrapper" id="report">
+        <div class="container">
+            <div class="row ">
+                <div class="4u 12u(narrower)" id="siderow">
+
+                    <!-- Sidebar -->
+                    <section id="sidebar">
+
+                        <header>
+                            <h3>Recent Reportings</h3>
+                        </header>
+<div class="container">
+    <div class="row">
+        <div class="col-md-10 col-center m-auto">
+            <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="0">
+            <!-- Carousel indicators -->
+            <ol class="carousel-indicators">
+                <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                {% for i in r %}
+                <li data-target="#myCarousel" data-slide-to={{i}}></li>
+                {% endfor %}
+            </ol>   
+            <!-- Wrapper for carousel items -->
+            <div class="carousel-inner">
+                <div class="item carousel-item active">
+                    <div class="row">
+                        {% for i in list_one %}
+                        <div class="col-sm-4">
+                            <div class="thumb-wrapper">
+                                <div class="img-box">
+                                    <img src="{{i.pic.url}}" class="img-responsive img-fluid" alt="">
+                                </div>
+                                <div class="thumb-content">
+                                    <h4>{{i.title}}</h4>
+                                    <p>{{i.desc}}s</p>
+                                    <p>({{i.location}})</p>
+                                    
+                                </div>                      
+                            </div>
+                        </div>
+                        {% endfor %}
+                        
+                    </div>
+                </div>
+                {% for i in sub_list %}
+                <div class="item carousel-item">
+                    <div class="row">
+                        {% for j in i %}
+                        <div class="col-sm-4">
+                            <div class="thumb-wrapper">
+                                <div class="img-box">
+                                    <img src="{{j.pic.url}}" class="img-responsive img-fluid" alt="" height="200" width="200">
+                                </div>
+                                <div class="thumb-content">
+                                    <h4>{{j.title}}</h4>
+                                    <p>{{j.desc}}</p>
+                                    <p>({{j.location}})</p>
+                                    
+                                </div>                      
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+                            </div>
+            <!-- Carousel controls -->
+            <a class="carousel-control left carousel-control-prev" href="#myCarousel" data-slide="prev">
+                <i class="fa fa-angle-left"></i>
+            </a>
+            <a class="carousel-control right carousel-control-next" href="#myCarousel" data-slide="next">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        </div>
+        </div>
+    </div>
+</div>
+
+
+                    </section>
+
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="wrapper">
+        <div class="container" id="main">
+        
+                <div class="" id="siderow">
+
+                    <!-- Sidebar -->
+                    <section id="sidebar">
+
+                        <header>
+                            <h3>Heat Map</h3>
+                        </header>
+
+                        <div id="map">
+                        </div>
+                    </section>
+
+                </div>
+                
+        </div>
+    </div>
+    <div id="footer-wrapper">
+        <div id="footer" class="container" id="mapacrime">
+            <header class="major">
+                <h2>Report an issue right now! <span class="glyphicon glyphicon-map-marker"></span></h2>
+                <p>Help the people you care about & those around you be safe by reporting an environmental issue to us today and sharing our website with your friends, family and the world.<br>
+                </p>
+            </header>
+
+            <form action="{% url 'home:index' %}" method="post" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+</form>
+        
+
+        </div>
+    </div>
+    <div class="wrapper" id="whyreport">
+        <div class="container" id="main">
+            <div class="row features">
+                <section class="4u 12u(narrower) feature">
+                    <div class="image-wrapper first">
+                        <a href="#" class="image featured"><img src="assets/persons.png" alt="" /></a>
+                    </div>
+                    <header>
+                        <h3>Make your friends and family live in a cleaner and greener environment!</h3>
+                    </header>
+                    <p>
+                    What is the cost of a clean environment? Alert your friends and family of the issues you're facing, to ensure proper steps are taken to resolve the issues, making our environment a better place! </p>
+                    <ul class="actions">
+                        <li><a href="#" class="button">REPORT NOW!</a></li>
+                    </ul>
+                </section>
+                <section class="4u 12u(narrower) feature">
+                    <div class="image-wrapper">
+                        <a href="#" class="image featured"><img src="assets/police%20copy.png" alt="" /></a>
+                    </div>
+                    <header>
+                        <h3>Help the Government departments locate the issues!</h3>
+                    </header>
+                    <p>Any issue you report will be notified to the concerned authorities and will help them in tracking down and taking action against issue. </p>
+                    <ul class="actions">
+                        <li><a href="#" class="button">REPORT NOW!</a></li>
+                    </ul>
+                </section>
+                <section class="4u 12u(narrower) feature">
+                    <div class="image-wrapper">
+                        <a href="#" class="image featured"><img src="assets/chat.png" alt="" /></a>
+                    </div>
+                    <header>
+                        <h3>Alert the media to help justice prevail</h3>
+                    </header>
+                    <p>By reporting issues and sharing envi maps, we can all get the media to cover the issue and gain the attention of the general public as well as the concerned authorities to alert the people.</p>
+                    <ul class="actions">
+                        <li><a href="#" class="button">REPORT NOW!</a></li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-wrapper">
+        <div id="footer" class="container" id="sharesection">
+            <header class="major">
+                <h2>Share and Save Lives</h2>
+                <p>Help the people around you be safe by reporting a crime to us today and sharing Crime Map with your friends, family and the world.<br>
+                </p>
+            </header>
+            <section class="12u 12u(narrower)">
+                <div class="row ">
+                    <ul class="divided icons 6u 12u(mobile)">
+                        <li class="icon fa-twitter"><a href="https://twitter.com/share" class="twitter-share-button" data-size="large" data-text="Be safe guys, Have a look -" data-hashtags="MakeStreetsSafe" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></li>
+                        <li  class="icon fa-facebook"><a id='shareBtn' >Alert by facebook</a></li>
+                        </li>
+
+
+                    </ul>
+                    <ul class="divided icons 6u 12u(mobile)">
+                        <li class="icon fa-whatsapp"><a href="whatsapp://send" data-text="Be Safe Guys. Have a look - " class="wa_btn wa_btn_s" data-href="https://powerful-badlands-57960.herokuapp.com/#/join" onClick="ga('send', 'event', { eventCategory: 'Social', eventAction: 'Share', eventLabel: 'WhatsAppShare', eventValue: 0});">Alert by Whatsapp</a></li>
+                        <li class="icon fa-comments-o"><a href="sms:+919999999999?body= Be safe guys, Have a look -https://powerful-badlands-57960.herokuapp.com/#/join">Alert by SMS</a></li>
+
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div id="copyright" class="container">
+        <ul class="menu">
+            <li>&copy; Envi Maps. All rights reserved.</li><li>Created By: <a href="https://www.ackshayjain.com">TEAM ELLIOT STARK</a></li>
+        </ul>
+    </div>
+    </div>
+
+    <script>
+        var map;
+        function updateMapByL(argument) {
+            var lat = [];
+            var lng = [];
+            for (var i = argument.length - 1; i >= 0; i--) {
+                $.ajax({
+                url: "https://maps.googleapis.com/maps/api/geocode/json?address="+argument[i],
+                success: function updateTheMap(params) {
+                    lat.push(params.results[0].geometry.location.lat);
+                    lng.push(params.results[0].geometry.location.lng);
+                }
+                });
+            }
+            console.log(lat)
+            updateMap(lat,lng);
+        }
+        function updateMap (lat, longi) {
+            console.log(lat);
+            console.log(longi)
+             map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 13,
+                center: { lat: 28.480837, lng: 77.080211 },
+                mapTypeId: 'terrain'
+            });
+
+             var heatmapData = [];
+
+            for (var i = lat.length - 1; i >= 0; i--) {
+                heatmapData.push(new google.maps.LatLng(lat[i], longi[i]));
+            };
+            var heatmap = new google.maps.visualization.HeatmapLayer({
+                data: heatmapData,
+                dissipating: false,
+                map: map
+            });
+            // body...
+        }
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 13,
+                center: { lat: 28.6139397, lng: 77.209021 },
+                mapTypeId: 'terrain'
+            });
+
+            // Create a <script> tag and set the USGS URL as the source.
+            var script = document.createElement('script');
+
+            // This example uses a local copy of the GeoJSON stored at
+            // http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojsonp
+            script.src = 'http://developers.google.com/maps/documentation/javascript/examples/json/earthquake_GeoJSONP.js';
+            document.getElementsByTagName('head')[0].appendChild(script);
+
+
+            var heatmapData = [];
+
+            var latLng;
+            // heatmapData.push(new google.maps.LatLng(28, 77));
+    
+            
+            var heatmap = new google.maps.visualization.HeatmapLayer({
+                data: heatmapData,
+                dissipating: false,
+                map: map
+            });
+        }
+
+        // function eqfeed_callback(results) {
+
+        //     console.log("Func");
+        //     var heatmapData = [];
+        //     for (var i = 0; i < results.features.length; i++) {
+        //         var coords = results.features[i].geometry.coordinates;
+        //         var latLng = new google.maps.LatLng(coords[1], coords[0]);
+        //         heatmapData.push(latLng);
+        //     }
+        //     for (let index = 0; index < 10; index++) {
+        //         var latLng = new google.maps.LatLng(28, 77);
+        //         heatmapData.push(latLng);                
+        //     }
+
+
+        
+        //     var heatmap = new google.maps.visualization.HeatmapLayer({
+        //         data: heatmapData,
+        //         dissipating: false,
+        //         map: map
+        //     });
+        // }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBpTqpnRkz3tNaSs4HmxnJFNhnWdEXxawU&libraries=visualization&callback=initMap">
+    </script>
+
+</body>
+</html>

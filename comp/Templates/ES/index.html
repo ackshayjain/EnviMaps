@@ -1,0 +1,29 @@
+<html>
+<center>
+WELCOME TO ENV
+
+
+{% if comp %}
+
+	{% for c in sub_list %}
+		<h2>
+		{% for i in c %}
+			NAME : {{i.title}}
+		
+		</h2>
+			{{count}}
+			DESCRIPTION : {{i.desc}}
+		<br>
+		<br>
+
+			<img src = "{{i.pic.url}}" alt="img" height = "200" width="200">
+		{% endfor %}
+		
+
+
+	{% endfor %}
+{% endif %}
+
+
+</center>
+</html>
