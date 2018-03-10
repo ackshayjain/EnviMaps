@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from models import Complaint
+from .models import Complaint
 
 
 class ComplaintAdmin(admin.ModelAdmin):
